@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="">
+        <input id="btnsubmit" type="submit" value="Click Me">
+    </form>
+    <div id="content"></div>
+
+    <script>
+        let btnload = document.getElementById("btnsubmit");
+        btnload.addEventListener("click", loadXML);
+
+        function loadXML(e) {
+            e.preventDefault();
+            const ajreq = new XMLHttpRequest();
+            ajreq.open("GET", "test.xml");
+            ajreq.onload = function() {
+                if (this.status == 200) {
+                    convertXML(this.responseXML);
+                }
+            };
+            ajreq.send();
+        }
+
+        function convertXML(xml) {
+            const songs = xml.getElementsByTagName("song");
+            const content = document.getElementById("content");
+            content.innerHTML = "";
+            for (let i = 0; i < songs.length; i++) {
+                // console.log(songs[i].getElementsByTagName("title")[0].childNodes[0].nodeValue);
+                content.innerHTML += `<p>${songs[i].getElementsByTagName("title")[0].childNodes[0].nodeValue}</p>
+                <p>${songs[i].getElementsByTagName("artist")[0].childNodes[0].nodeValue}</p>
+                <p>${songs[i].getElementsByTagName("country")[0].childNodes[0].nodeValue}</p>
+                <p>${songs[i].getElementsByTagName("genre")[0].childNodes[0].nodeValue}</p>
+                <p>${songs[i].getElementsByTagName("year")[0].childNodes[0].nodeValue}</p>
+                </br>
+                `;
+            }
+
+        }
+    </script>
+</body>
+
+</html>
